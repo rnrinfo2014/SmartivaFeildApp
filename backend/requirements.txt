@@ -1,0 +1,7 @@
+-r ../requirements-schema.txt
+fastapi>=0.115.6,<1
+uvicorn>=0.34,<1
+httpx>=0.28,<1
+pydantic-settings>=2.7,<3
+python-multipart>=0.0.22,<1
+psycopg[binary]>=3.2,<4

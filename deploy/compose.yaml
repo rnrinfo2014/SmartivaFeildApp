@@ -1,0 +1,100 @@
+name: smartiva-fieldops
+x-api: &api
+  image: smartiva-fieldops-api:pilot
+  build:
+    context: ..
+    dockerfile: deploy/Dockerfile
+  environment: &api-env
+    SMARTIVA_API_TOKEN: ${SMARTIVA_API_TOKEN:?Run setup_env.py first}
+    SMARTIVA_DATABASE_URL: postgresql+psycopg://smartiva:${POSTGRES_PASSWORD:?Run setup_env.py first}@db:5432/smartiva
+    SMARTIVA_AUDIO_STORAGE_PATH: /var/lib/smartiva/audio
+    SMARTIVA_AI_PROVIDER: ${SMARTIVA_AI_PROVIDER:-gemini}
+    SMARTIVA_GEMINI_API_KEY: ${SMARTIVA_GEMINI_API_KEY:-}
+    SMARTIVA_GROQ_API_KEY: ${SMARTIVA_GROQ_API_KEY:-}
+    SMARTIVA_GEMINI_MODEL: ${SMARTIVA_GEMINI_MODEL:-gemini-2.5-flash}
+    SMARTIVA_GROQ_MODEL: ${SMARTIVA_GROQ_MODEL:-llama-3.3-70b-versatile}
+    SMARTIVA_GROQ_WHISPER_MODEL: ${SMARTIVA_GROQ_WHISPER_MODEL:-whisper-large-v3}
+    NO_PROXY: localhost,127.0.0.1,db,api
+  volumes:
+    - audio:/var/lib/smartiva/audio
+  read_only: true
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: '3'
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: smartiva
+      POSTGRES_DB: smartiva
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run setup_env.py first}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U smartiva -d smartiva']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+
+  init:
+    <<: *api
+    command: [python, -m, app.manage, init-db]
+    restart: 'no'
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    <<: *api
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8000:8000'
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8000/readyz", timeout=15)']
+      interval: 30s
+      timeout: 20s
+      start_period: 30s
+      retries: 3
+
+  edge:
+    image: caddy:2-alpine
+    profiles: [edge]
+    restart: unless-stopped
+    environment:
+      SMARTIVA_API_HOST: ${SMARTIVA_API_HOST:-localhost}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+
+volumes:
+  postgres:
+  audio:
+  caddy_data:
+  caddy_config:

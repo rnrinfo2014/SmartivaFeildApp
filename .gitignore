@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.db
+.env
+private-audio/
+backend/private-audio/
+deploy/backups/

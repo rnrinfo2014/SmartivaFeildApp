@@ -1,0 +1,167 @@
+{
+  "site_id": "00000000-0000-4000-8000-000000000001",
+  "transcript": "64 channel NVR, 27 Dahua and 15 CP Plus cameras",
+  "extracted_data": {
+    "site": {
+      "name": "Yogasree Textiles",
+      "gps_lat": null,
+      "gps_lng": null,
+      "address": null,
+      "landmarks": null
+    },
+    "contacts": [],
+    "floors": [
+      {
+        "ref": "ground",
+        "name": "Ground",
+        "level": 0
+      }
+    ],
+    "zones": [
+      {
+        "ref": "steps",
+        "floor_id": "ground",
+        "zone_name": "Steps"
+      }
+    ],
+    "assets": [
+      {
+        "ref": "nvr1",
+        "zone_id": "steps",
+        "asset_type": "NVR",
+        "brand": "Dahua",
+        "model": null,
+        "channel_capacity": 64,
+        "port_capacity": null,
+        "poe_port_capacity": null,
+        "serial_number": null,
+        "installed_date": null,
+        "notes": null
+      },
+      {
+        "ref": "sw1",
+        "zone_id": "steps",
+        "asset_type": "PoE_Switch",
+        "brand": "D-Link",
+        "model": null,
+        "channel_capacity": null,
+        "port_capacity": 8,
+        "poe_port_capacity": 8,
+        "serial_number": null,
+        "installed_date": null,
+        "notes": null
+      }
+    ],
+    "network_interfaces": [
+      {
+        "ref": "lan1",
+        "asset_id": "nvr1",
+        "name": "LAN1",
+        "purpose": null,
+        "ip_address": "192.168.1.10",
+        "prefix_length": 24,
+        "mac_address": null
+      },
+      {
+        "ref": "lan2",
+        "asset_id": "nvr1",
+        "name": "LAN2",
+        "purpose": "isolated cameras",
+        "ip_address": null,
+        "prefix_length": null,
+        "mac_address": null
+      }
+    ],
+    "cameras": [
+      {
+        "ref": "cam1",
+        "nvr_id": "nvr1",
+        "switch_id": "sw1",
+        "zone_id": "steps",
+        "brand": "Dahua",
+        "megapixel": null,
+        "camera_type": "IP",
+        "ip_address": null,
+        "mac_address": null,
+        "serial_number": null,
+        "channel_no": 1,
+        "install_year": null,
+        "status": "unknown"
+      }
+    ],
+    "connectivity": [
+      {
+        "ref": "uplink",
+        "from_asset_id": "nvr1",
+        "to_asset_id": "sw1",
+        "from_interface_id": "lan2",
+        "from_port": null,
+        "to_port": null,
+        "connection_type": "ethernet",
+        "notes": null
+      }
+    ],
+    "inventory_reports": [
+      {
+        "nvr_id": "nvr1",
+        "reported_total": null,
+        "brand_counts": {
+          "Dahua": 27,
+          "CP Plus": 15
+        },
+        "brand_breakdown_complete": true,
+        "reported_active": null,
+        "poe_camera_count": null
+      }
+    ],
+    "switch_reports": [],
+    "ups_reports": []
+  },
+  "calculations": [
+    {
+      "nvr_id": "nvr1",
+      "capacity": 64,
+      "reported_total": 42,
+      "reported_active": null,
+      "individually_documented": 1,
+      "free_channels": 22,
+      "poe_minimum_switches": {}
+    }
+  ],
+  "warnings": [],
+  "probes": [
+    {
+      "code": "active_cameras",
+      "target_ref": "nvr1",
+      "question_tamil": "42 cameras mention pannirukkinga. Ippo ethana online-la irukku?"
+    },
+    {
+      "code": "poe_count",
+      "target_ref": "nvr1",
+      "question_tamil": "Indha cameras-la ethana PoE power use pannudhu? Separate power / Wi-Fi cameras irukka?"
+    },
+    {
+      "code": "port_status",
+      "target_ref": "sw1",
+      "question_tamil": "Ground / Steps switch-la used, free, faulty ports ethana? Uplink endha port-la irukku?"
+    },
+    {
+      "code": "ups_mapping",
+      "target_ref": "nvr1",
+      "question_tamil": "Indha device-ku UPS backup irukka? Endha UPS, endha floor, evlo neram backup kidaikkum?"
+    },
+    {
+      "code": "ups_mapping",
+      "target_ref": "sw1",
+      "question_tamil": "Indha device-ku UPS backup irukka? Endha UPS, endha floor, evlo neram backup kidaikkum?"
+    },
+    {
+      "code": "site_contact",
+      "target_ref": null,
+      "question_tamil": "Site incharge peyar, role, contact number enna?"
+    }
+  ],
+  "next_question_tamil": "42 cameras mention pannirukkinga. Ippo ethana online-la irukku?",
+  "requires_confirmation": true,
+  "provider": "gemini"
+}

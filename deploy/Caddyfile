@@ -1,0 +1,12 @@
+{$SMARTIVA_API_HOST} {
+	request_body {
+		max_size 12MB
+	}
+	# Caddy verifies ownership and renews certificates for your DNS hostname.
+	# No access log: voice transcripts and authorization headers stay private.
+	reverse_proxy api:8000 {
+		transport http {
+			response_header_timeout 120s
+		}
+	}
+}

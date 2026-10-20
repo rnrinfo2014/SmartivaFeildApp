@@ -1,0 +1,17 @@
+VPS Codex-la continue panna:
+
+1. Transfer ZIP-ai download pannunga.
+2. SmartivaDevVm / intended VPS Codex task-la ZIP attach pannunga.
+3. Keezhe irukkura prompt-ai send pannunga:
+
+"Indha Smartiva FieldOps transfer ZIP-ai new folder-la extract pannunga.
+Existing files overwrite panna vendam. HANDOVER.md, deploy/README.md,
+deploy/VALIDATION.md read pannunga. TRANSFER_CHECKSUMS.sha256 verify pannunga.
+First server OS, RAM, free disk, Docker, existing apps and used ports inspect
+pannunga. Existing apps disturb panna vendam. Indha project-ai scratch-la
+rebuild panna vendam. Next goal: existing VPS-la backend deploy, secure
+Gemini/Groq configuration, current 0.5.1 phone app AI + sync acceptance test."
+
+ZIP-la backend + Flutter source + schema + tests + deployment + handover irukku.
+Phone-la saved customer data, API keys, SDK caches, APK and signing key include
+pannala. Existing phone app-ai uninstall / Clear data panna vendam.
